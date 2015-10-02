@@ -1,13 +1,13 @@
 package com.brstf.simplelife;
 
-import java.util.Random;
-
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +18,16 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.brstf.simplelife.LifeCount;
 import com.brstf.simplelife.dialog.AboutDialog;
+
+import java.util.Random;
 
 public class SettingsFragment extends Fragment implements AnimationListener {
 	private TextView m_invertText;
@@ -74,13 +76,16 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		case 20:
 			reset_radio.check(R.id.settings_rg_20);
 			break;
-		case 30:
-			reset_radio.check(R.id.settings_rg_30);
-			break;
 		case 40:
 			reset_radio.check(R.id.settings_rg_40);
 			break;
+		default:
+			reset_radio.check(R.id.settings_rg_custom);
+			break;
 		}
+		// TODO: can fragment implement OnCheckedChangeListener?
+		// If so, move method out to fragment activity body
+		// Else find way to pass proper context to dialog
 		reset_radio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -89,13 +94,37 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 				case R.id.settings_rg_20:
 					changeResetVal(20);
 					break;
-				case R.id.settings_rg_30:
-					changeResetVal(30);
-					break;
 				case R.id.settings_rg_40:
 					changeResetVal(40);
+					break;
+				case R.id.settings_rg_custom:
+					// Dialog-builder for custom life value
+					// TODO: Pass proper context to AlertDialog.Builder
+					// maybe restart with AlertDialog in another method - this might be hacky
+					AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+					alert.setMessage(getString(R.string.settings_reset_custom_prompt));
+
+					// Create EditText for entry
+					final EditText lifeInput = new EditText(getActivity());
+					lifeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+					alert.setView(lifeInput);
+
+					alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							int customTotal = Integer.parseInt(lifeInput.getText().toString());
+							changeResetVal(customTotal);
+						}
+					});
+					alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {}
+					});
+					alert.show();
+
+					// TODO: see whether removing this breaks anything
+					/*
 					getActivity().setTheme(R.style.AppBaseThemeBlack);
 					getActivity().recreate();
+					*/
 					break;
 				}
 			}
@@ -376,7 +405,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	/**
 	 * Sets the text of the number of sides on each die being rolled.
 	 * 
-	 * @param num
+	 * @param sides
 	 *            Number of sides on the dice
 	 */
 	private void setDiceSidesText(int sides) {
