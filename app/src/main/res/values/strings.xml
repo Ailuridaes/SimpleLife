@@ -50,6 +50,9 @@
     <string name="settings_black_oled">*Can save battery on OLED screens</string>
     <string name="settings_cmd">Enable Commander Damage</string>
 
+    <!-- Custom Life Total Strings -->
+    <string name="settings_reset_custom_prompt">Set Custom Life Total</string>
+
     <!-- Sliding Menu Strings -->
     <string name="player1">Player 1</string>
     <string name="player2">Player 2</string>

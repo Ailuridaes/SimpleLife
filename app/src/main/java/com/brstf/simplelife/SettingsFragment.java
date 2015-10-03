@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -99,26 +100,30 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 					break;
 				case R.id.settings_rg_custom:
 					// Dialog-builder for custom life value
-					// TODO: Pass proper context to AlertDialog.Builder
-					// maybe restart with AlertDialog in another method - this might be hacky
-					AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-					alert.setMessage(getString(R.string.settings_reset_custom_prompt));
+					// maybe put AlertDialog in another method - this might be hacky
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+					AlertDialog dialog;
+					builder.setMessage(getString(R.string.settings_reset_custom_prompt));
 
 					// Create EditText for entry
 					final EditText lifeInput = new EditText(getActivity());
 					lifeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-					alert.setView(lifeInput);
+					builder.setView(lifeInput);
 
-					alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							int customTotal = Integer.parseInt(lifeInput.getText().toString());
 							changeResetVal(customTotal);
 						}
 					});
-					alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {}
+					// TODO: Make cancel restore previous radio selection
+					builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+						}
 					});
-					alert.show();
+					dialog = builder.create();
+					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+					dialog.show();
 
 					// TODO: see whether removing this breaks anything
 					/*
