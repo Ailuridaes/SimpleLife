@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,9 +86,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 			reset_radio.check(R.id.settings_rg_custom);
 			break;
 		}
-		// TODO: can fragment implement OnCheckedChangeListener?
-		// If so, move method out to fragment activity body
-		// Else find way to pass proper context to dialog
+
 		reset_radio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -102,7 +102,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 					// Dialog-builder for custom life value
 					// maybe put AlertDialog in another method - this might be hacky
 					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					AlertDialog dialog;
+					final AlertDialog dialog;
 					builder.setMessage(getString(R.string.settings_reset_custom_prompt));
 
 					// Create EditText for entry
@@ -112,6 +112,9 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 
 					builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
+							if (lifeInput.getText().toString().equals("")) {
+								return;
+							}
 							int customTotal = Integer.parseInt(lifeInput.getText().toString());
 							changeResetVal(customTotal);
 						}
@@ -124,6 +127,28 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 					dialog = builder.create();
 					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 					dialog.show();
+
+					// disable PositiveButton until number is entered
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					lifeInput.addTextChangedListener(new TextWatcher() {
+						@Override
+						public void onTextChanged(CharSequence s, int start, int before, int count) {
+						}
+
+						@Override
+						public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+						}
+
+						@Override
+						public void afterTextChanged(Editable s) {
+							// Check if edittext is empty
+							if (lifeInput.getText().length() == 0) {
+								dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+							} else {
+								dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+							}
+						}
+					});
 
 					// TODO: see whether removing this breaks anything
 					/*
