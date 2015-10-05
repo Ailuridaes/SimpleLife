@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -73,7 +75,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 				.getString(R.string.key_total), 20);
 		changeResetVal(resetval);
 
-		RadioGroup reset_radio = (RadioGroup) getView().findViewById(
+		final RadioGroup reset_radio = (RadioGroup) getView().findViewById(
 				R.id.settings_reset_val_rg);
 		switch (resetval) {
 		case 20:
@@ -91,6 +93,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				Log.d("RESET RADIO", Integer.toString(checkedId));
 				switch (checkedId) {
 				case R.id.settings_rg_20:
 					changeResetVal(20);
@@ -99,7 +102,8 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 					changeResetVal(40);
 					break;
 				case R.id.settings_rg_custom:
-					// Dialog-builder for custom life value
+					Log.d("RESET RADIO", "Custom life option selected");
+					// AlertDialog for custom life value
 					// maybe put AlertDialog in another method - this might be hacky
 					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 					final AlertDialog dialog;
@@ -120,8 +124,25 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 						}
 					});
 					// TODO: Make cancel restore previous radio selection
+					// Dialog is repeating on cancel
 					builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
+							int resetval = mPrefs.getInt(getActivity()
+									.getString(R.string.key_total), 20);
+							switch (resetval) {
+								case 20:
+									RadioButton button20 = (RadioButton) getView().findViewById(R.id.settings_rg_20);
+									button20.setChecked(true);
+									break;
+								case 40:
+									RadioButton button40 = (RadioButton) getView().findViewById(R.id.settings_rg_40);
+									button40.setChecked(true);
+									break;
+								default:
+									// should be unreachable
+									break;
+							}
+							dialog.dismiss();
 						}
 					});
 					dialog = builder.create();
