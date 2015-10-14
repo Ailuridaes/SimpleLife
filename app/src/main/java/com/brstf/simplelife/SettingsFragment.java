@@ -102,74 +102,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 					changeResetVal(40);
 					break;
 				case R.id.settings_rg_custom:
-					Log.d("RESET RADIO", "Custom life option selected");
-					// AlertDialog for custom life value
-					// maybe put AlertDialog in another method - this might be hacky
-					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					final AlertDialog dialog;
-					builder.setMessage(getString(R.string.settings_reset_custom_prompt));
-
-					// Create EditText for entry
-					final EditText lifeInput = new EditText(getActivity());
-					lifeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
-					builder.setView(lifeInput);
-
-					builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							if (lifeInput.getText().toString().equals("")) {
-								return;
-							}
-							int customTotal = Integer.parseInt(lifeInput.getText().toString());
-							changeResetVal(customTotal);
-						}
-					});
-					// TODO: Make cancel restore previous radio selection
-					// Dialog is repeating on cancel
-					builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							int resetval = mPrefs.getInt(getActivity()
-									.getString(R.string.key_total), 20);
-							switch (resetval) {
-								case 20:
-									RadioButton button20 = (RadioButton) getView().findViewById(R.id.settings_rg_20);
-									button20.setChecked(true);
-									break;
-								case 40:
-									RadioButton button40 = (RadioButton) getView().findViewById(R.id.settings_rg_40);
-									button40.setChecked(true);
-									break;
-								default:
-									// should be unreachable
-									break;
-							}
-							dialog.dismiss();
-						}
-					});
-					dialog = builder.create();
-					dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-					dialog.show();
-
-					// disable PositiveButton until number is entered
-					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-					lifeInput.addTextChangedListener(new TextWatcher() {
-						@Override
-						public void onTextChanged(CharSequence s, int start, int before, int count) {
-						}
-
-						@Override
-						public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-						}
-
-						@Override
-						public void afterTextChanged(Editable s) {
-							// Check if edittext is empty
-							if (lifeInput.getText().length() == 0) {
-								dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-							} else {
-								dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-							}
-						}
-					});
+					changeResetValCustom();
 
 					// TODO: see whether removing this breaks anything
 					/*
@@ -536,6 +469,78 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	private void reset(int resetval) {
 		((LifeCount) getActivity()).reset(resetval);
 		SettingsFragment.this.getFragmentManager().popBackStack();
+	}
+
+	private void changeResetValCustom() {
+		// AlertDialog to prompt user for custom life value
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		final AlertDialog dialog;
+		builder.setMessage(getString(R.string.settings_reset_custom_prompt));
+
+		final EditText lifeInput = new EditText(getActivity());
+		lifeInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+		builder.setView(lifeInput);
+
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// TODO: Double check on other devices before removing completely
+				/*
+				if (lifeInput.getText().toString().equals("")) {
+					return;
+				}
+				*/
+				int customTotal = Integer.parseInt(lifeInput.getText().toString());
+				changeResetVal(customTotal);
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				int resetval = mPrefs.getInt(getActivity()
+						.getString(R.string.key_total), 20);
+				switch (resetval) {
+					case 20:
+						RadioButton button20 = (RadioButton) getView().findViewById(R.id.settings_rg_20);
+						button20.setChecked(true);
+						break;
+					case 40:
+						RadioButton button40 = (RadioButton) getView().findViewById(R.id.settings_rg_40);
+						button40.setChecked(true);
+						break;
+					default:
+						// should be unreachable
+						break;
+				}
+				dialog.cancel();
+			}
+		});
+
+		dialog = builder.create();
+		dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		dialog.show();
+
+		// disable PositiveButton until number is entered
+		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+		lifeInput.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// Check if edittext is empty
+				if (lifeInput.getText().length() == 0) {
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+				} else {
+					dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+				}
+			}
+		});
 	}
 
 	@Override
