@@ -39,7 +39,7 @@
     </style>
 
     <!-- Black Theme -->
-    <style name="AppBaseThemeBlack" parent="android:Theme">
+    <style name="AppBaseThemeBlack" parent="android:Theme.Holo">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowTitleSize">0dp</item>
         <item name="android:windowBackground">@color/black</item>
