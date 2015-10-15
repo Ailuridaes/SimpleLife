@@ -471,6 +471,10 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		SettingsFragment.this.getFragmentManager().popBackStack();
 	}
 
+	/**
+	 * Changes reset value to a user-selected custom value. Creates an
+	 * AlertDialog for the user to enter their custom reset value.
+	 */
 	private void changeResetValCustom() {
 		// AlertDialog to prompt user for custom life value
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
