@@ -655,6 +655,76 @@
                 android:textSize="@dimen/settings_description_text_size" />
         </RelativeLayout>
 
+        <!-- Custom Background -->
+
+        <RelativeLayout
+            android:id="@+id/settings_background_rl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/settings_theme_rl"
+            android:layout_alignBottom="@id/settings_theme_rl"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/settings_bigmod_rl"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/spacer"
+            android:background="?attr/settings_tile_background" >
+
+            <!--Button
+                android:id="@+id/but_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/transparent_button" / -->
+
+
+
+            <RelativeLayout
+                android:id="@+id/settings_upper_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center" >
+
+                <CheckBox
+                    android:id="@+id/settings_background_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:clickable="false"
+                    android:paddingBottom="@dimen/settings_invert_padding" />
+
+                <TextView
+                    android:id="@+id/settings_background_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/settings_background_check"
+                    android:text="@string/settings_background_desc"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_description_text_size" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/background_whatev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="false"
+                android:layout_below="@id/settings_upper_background"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/settings_invert_total"
+                android:textColor="@color/red_tile"
+                android:textSize="@dimen/settings_invert_text_size" />
+
+
+        </RelativeLayout>
+
         <!-- About Button -->
 
         <RelativeLayout
