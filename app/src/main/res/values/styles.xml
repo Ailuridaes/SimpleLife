@@ -11,6 +11,7 @@
         <item name="menu_separator">@drawable/gray_separator</item>
         <item name="settings_tile_background">@drawable/gray_tile</item>
         <item name="dice_button_drawable">@drawable/gray_button_circle</item>
+        <item name="background_button_drawable">@drawable/gray_button_rectangle</item>
         <item name="action_undo">@drawable/ic_action_undo</item>
 
         <!-- Colors -->
@@ -25,6 +26,7 @@
         <item name="menu_separator">@drawable/dark_gray_separator</item>
         <item name="android:windowTitleSize">0dp</item>
         <item name="dice_button_drawable">@drawable/gray_button_circle</item>
+        <item name="background_button_drawable">@drawable/gray_button_rectangle</item>
         <item name="action_undo">@drawable/ic_action_undo_dark</item>
 
         <!-- Drawables -->
@@ -44,6 +46,7 @@
         <item name="android:windowTitleSize">0dp</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="dice_button_drawable">@drawable/gray_black_button_circle</item>
+        <item name="background_button_drawable">@drawable/gray_button_rectangle</item>
         <item name="action_undo">@drawable/ic_action_undo_dark</item>
 
         <!-- Drawables -->

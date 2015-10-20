@@ -48,8 +48,8 @@
     <string name="settings_dark_theme">Dark Theme</string>
     <string name="settings_black_theme">Black Theme*</string>
     <string name="settings_black_oled">*Can save battery on OLED screens</string>
-    <string name="settings_background_desc">Custom Background</string>
-    <string name="settings_background_button">Select Background</string>
+    <string name="settings_background_desc">Custom\nBackground</string>
+    <string name="settings_background_button">Load BG</string>
     <string name="settings_cmd">Enable Commander Damage</string>
 
     <!-- Custom Life Total Strings -->
