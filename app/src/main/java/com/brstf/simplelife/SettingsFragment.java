@@ -43,6 +43,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	private CheckBox m_wake_cb;
 	private CheckBox m_quick_cb;
 	private CheckBox m_bigmod_cb;
+	private CheckBox m_custombg_cb;
 	private SharedPreferences mPrefs;
 	private Random m_rand;
 
@@ -266,9 +267,8 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		// Set up +5/-5 check box
 		m_bigmod_cb = (CheckBox) getView().findViewById(
 				R.id.settings_bigmod_check);
-		boolean showBigmod = mPrefs.getBoolean(getString(R.string.key_bigmod),
-				true);
-		m_bigmod_cb.setChecked(showBigmod);
+		m_bigmod_cb.setChecked(mPrefs.getBoolean(getString(R.string.key_bigmod),
+				true));
 		Button but_bigmod = (Button) getView().findViewById(R.id.but_bigmod);
 		but_bigmod.setOnClickListener(new OnClickListener() {
 			@Override
@@ -316,6 +316,33 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 				}
 			}
 		});
+
+		// Set up custom background option
+		m_custombg_cb = (CheckBox) getView().findViewById(
+				R.id.settings_background_check);
+		m_custombg_cb.setChecked(mPrefs.getBoolean(getString(R.string.key_custombg), false));
+		Button but_custombg = (Button) getView().findViewById(R.id.but_background);
+		but_custombg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO: check if bg actually loaded
+				m_custombg_cb.setChecked(!m_custombg_cb.isChecked());
+				mPrefs.edit()
+						.putBoolean(
+								getActivity().getString(R.string.key_custombg),
+								m_custombg_cb.isChecked()).apply();
+
+			}
+		});
+
+		Button but_loadbg = (Button) getView().findViewById(R.id.but_background_select);
+		but_loadbg.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// send intent or w/e to load in image
+			}
+		});
+
 
 		// Setup about button
 		ImageButton but_about = (ImageButton) this.getView().findViewById(
