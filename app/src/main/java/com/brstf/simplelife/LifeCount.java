@@ -1,14 +1,5 @@
 package com.brstf.simplelife;
 
-import com.brstf.simplelife.controls.LifeController;
-import com.brstf.simplelife.data.HistoryInt;
-import com.brstf.simplelife.data.LifeDbAdapter;
-import com.brstf.simplelife.widgets.LifeView;
-import com.brstf.simplelife.R;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,6 +12,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+
+import com.brstf.simplelife.controls.LifeController;
+import com.brstf.simplelife.data.HistoryInt;
+import com.brstf.simplelife.data.LifeDbAdapter;
+import com.brstf.simplelife.widgets.LifeView;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class LifeCount extends SlidingFragmentActivity implements
 		OnSharedPreferenceChangeListener {
@@ -73,6 +72,8 @@ public class LifeCount extends SlidingFragmentActivity implements
 				false));
 		setBigmodChanged(mPrefs
 				.getBoolean(getString(R.string.key_bigmod), true));
+		setBackgroundChanged(mPrefs
+				.getBoolean(getString(R.string.key_custombg), false));
 
 		setBehindContentView(R.layout.sliding_menu_frame);
 		getSlidingMenu().setSecondaryMenu(R.layout.sliding_menu_frame2);
@@ -144,6 +145,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 			edit.putInt(getString(R.string.key_dice_num), 2);
 			edit.putInt(getString(R.string.key_theme),
 					R.style.AppBaseThemeLight);
+			edit.putBoolean(getString(R.string.key_custombg), false);
 			edit.commit();
 		}
 	}
@@ -433,6 +435,12 @@ public class LifeCount extends SlidingFragmentActivity implements
 		((LifeView) findViewById(R.id.player1_lv)).setBigmodEnabled(bigmod);
 	}
 
+	private void setBackgroundChanged(boolean bg_bool) {
+		// remove bg if custombg = false
+		int resid = bg_bool ? R.drawable.background_image : 0;
+		this.findViewById(R.id.lifecount_rl).setBackgroundResource(resid);
+	}
+
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
@@ -458,6 +466,10 @@ public class LifeCount extends SlidingFragmentActivity implements
 		} else if (key == getString(R.string.key_theme)) {
 			// Theme changed
 			this.recreate();
+		} else if (key == getString(R.string.key_custombg)) {
+			// Background preference changed
+			setBackgroundChanged(mPrefs.getBoolean(key, false));
 		}
+
 	}
 }
