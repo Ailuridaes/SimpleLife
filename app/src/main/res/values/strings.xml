@@ -25,7 +25,8 @@
     <string name="key_dice_num">dice_num</string>
     <string name="key_dice_sides">dice_sides</string>
     <string name="key_theme">theme</string>
-    <string name="key_custombg">custombg_bool</string>
+    <string name="key_custombg_bool">custombg_bool</string>
+    <string name="key_custombg_uri">custombg_uri</string>
 
     <!-- Settings Strings -->
     <string name="settings_poison">Enable Poison</string>

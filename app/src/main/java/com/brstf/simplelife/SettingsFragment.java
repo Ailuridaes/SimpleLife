@@ -46,6 +46,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	private CheckBox m_custombg_cb;
 	private SharedPreferences mPrefs;
 	private Random m_rand;
+	private int PICK_IMAGE_REQUEST = 1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -320,16 +321,21 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		// Set up custom background option
 		m_custombg_cb = (CheckBox) getView().findViewById(
 				R.id.settings_background_check);
-		m_custombg_cb.setChecked(mPrefs.getBoolean(getString(R.string.key_custombg), false));
+		m_custombg_cb.setChecked(mPrefs.getBoolean(getString(R.string.key_custombg_bool), false));
 		Button but_custombg = (Button) getView().findViewById(R.id.but_background);
 		but_custombg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO: check if bg actually loaded
+				// Flow: 1. switch custombg_bool pref
+				// 2. changeBG() method sets bg, if fails, changes pref back to false
+				// 3. HERE - check pref, set checkbox accordingly
+				// Does this block for pref update? -shrug- worth testing!
+
 				m_custombg_cb.setChecked(!m_custombg_cb.isChecked());
 				mPrefs.edit()
 						.putBoolean(
-								getActivity().getString(R.string.key_custombg),
+								getActivity().getString(R.string.key_custombg_bool),
 								m_custombg_cb.isChecked()).apply();
 
 			}
@@ -339,7 +345,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		but_loadbg.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// send intent or w/e to load in image
+				triggerImageIntent();
 			}
 		});
 
@@ -572,6 +578,41 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 				}
 			}
 		});
+	}
+
+
+	private void triggerImageIntent() {
+		Intent intent = new Intent();
+		// Show only images, no videos or anything else
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		// Always show the chooser (if there are multiple options available)
+		startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+			Uri uri = data.getData();
+			String strUri = uri.toString();
+
+			mPrefs.edit().putString(getString(R.string.key_custombg_uri),strUri)
+					.apply();
+			/*
+			try {
+				Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+				// Log.d(TAG, String.valueOf(bitmap));
+
+				ImageView imageView = (ImageView) findViewById(R.id.imageView);
+				imageView.setImageBitmap(bitmap);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			*/
+		}
 	}
 
 	@Override

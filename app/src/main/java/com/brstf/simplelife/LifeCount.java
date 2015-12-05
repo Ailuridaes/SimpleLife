@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -73,7 +74,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 		setBigmodChanged(mPrefs
 				.getBoolean(getString(R.string.key_bigmod), true));
 		setBackgroundChanged(mPrefs
-				.getBoolean(getString(R.string.key_custombg), false));
+				.getBoolean(getString(R.string.key_custombg_bool), false));
 
 		setBehindContentView(R.layout.sliding_menu_frame);
 		getSlidingMenu().setSecondaryMenu(R.layout.sliding_menu_frame2);
@@ -145,7 +146,9 @@ public class LifeCount extends SlidingFragmentActivity implements
 			edit.putInt(getString(R.string.key_dice_num), 2);
 			edit.putInt(getString(R.string.key_theme),
 					R.style.AppBaseThemeLight);
-			edit.putBoolean(getString(R.string.key_custombg), false);
+			edit.putBoolean(getString(R.string.key_custombg_bool), false);
+			// TODO: Remove default bg, string = ""?
+			edit.putString(getString(R.string.key_custombg_uri), "android.resource://com.brstf.simplelife/drawable/background_image.jpg");
 			edit.commit();
 		}
 	}
@@ -436,9 +439,33 @@ public class LifeCount extends SlidingFragmentActivity implements
 	}
 
 	private void setBackgroundChanged(boolean bg_bool) {
-		// remove bg if custombg = false
+
+		// removes bg if custombg_bool = false
 		int resid = bg_bool ? R.drawable.background_image : 0;
 		this.findViewById(R.id.lifecount_rl).setBackgroundResource(resid);
+
+		/*
+			Change to:
+			If successful URI and bg_bool, set to URI
+			Else { this.findViewById(R.id.lifecount_rl).setBackgroundResource(0);
+					pref = false
+					flash "load new bg image" string
+					}
+		 */
+
+		Uri uri = Uri.parse(mPrefs.getBoolean(getString(R.string.key_custombg_bool), ""));
+		/*
+		try {
+			Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+			// Log.d(TAG, String.valueOf(bitmap));
+
+			ImageView imageView = (ImageView) findViewById(R.id.imageView);
+			this.findViewById(R.id.lifecount_rl).setBackground(bitmap);
+			imageView.setImageBitmap(bitmap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
 	}
 
 	@Override
@@ -466,9 +493,15 @@ public class LifeCount extends SlidingFragmentActivity implements
 		} else if (key == getString(R.string.key_theme)) {
 			// Theme changed
 			this.recreate();
-		} else if (key == getString(R.string.key_custombg)) {
+		} else if (key == getString(R.string.key_custombg_bool)) {
 			// Background preference changed
 			setBackgroundChanged(mPrefs.getBoolean(key, false));
+		} else if (key == getString(R.string.key_custombg_uri)) {
+			// New background loaded
+			Boolean bg_bool;
+			if(bg_bool = mPrefs.getBoolean(getString(R.string.key_custombg_bool), false)) {
+				setBackgroundChanged(bg_bool);
+			}
 		}
 
 	}
