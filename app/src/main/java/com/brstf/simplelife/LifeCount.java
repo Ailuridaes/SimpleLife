@@ -69,11 +69,17 @@ public class LifeCount extends SlidingFragmentActivity implements
 
 		// Set poison visibility
 		setPoisonVisible(mPrefs.getBoolean(getString(R.string.key_poison),
-				false));
+                false));
 		setBigmodChanged(mPrefs
-				.getBoolean(getString(R.string.key_bigmod), true));
-		setBackgroundChanged(mPrefs
-				.getBoolean(getString(R.string.key_custombg), false));
+                .getBoolean(getString(R.string.key_bigmod), true));
+
+        // Set background
+        if (mPrefs.getInt(getString(R.string.key_theme), R.style.AppBaseThemeLight) == R.style.AppBaseThemeMana){
+            setBackgroundChanged(mPrefs.getInt(getString(R.string.key_background), ManaType.NONE));
+        } else {
+            setBackgroundChanged(ManaType.NONE);
+        }
+
 
 		setBehindContentView(R.layout.sliding_menu_frame);
 		getSlidingMenu().setSecondaryMenu(R.layout.sliding_menu_frame2);
@@ -145,7 +151,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 			edit.putInt(getString(R.string.key_dice_num), 2);
 			edit.putInt(getString(R.string.key_theme),
 					R.style.AppBaseThemeLight);
-			edit.putBoolean(getString(R.string.key_custombg), false);
+			edit.putInt(getString(R.string.key_background), ManaType.PLAINS);
 			edit.commit();
 		}
 	}
@@ -435,9 +441,37 @@ public class LifeCount extends SlidingFragmentActivity implements
 		((LifeView) findViewById(R.id.player1_lv)).setBigmodEnabled(bigmod);
 	}
 
-	private void setBackgroundChanged(boolean bg_bool) {
-		// remove bg if custombg = false
-		int resid = bg_bool ? R.drawable.background_image : 0;
+	/**
+	 * Set or clear background.
+	 *
+	 * @param manaType
+	 *            int representing manaType for background choice. ManaType.NONE or 0 clears background.
+	 */
+	private void setBackgroundChanged(int manaType) {
+		int resid;
+		switch (manaType) {
+			case ManaType.NONE:
+				resid = 0;
+				break;
+			case ManaType.PLAINS:
+				resid = R.drawable.background_image;
+				break;
+			case ManaType.ISLAND:
+				resid = R.drawable.background_image;
+				break;
+			case ManaType.SWAMP:
+				resid = R.drawable.background_image;
+				break;
+			case ManaType.MOUNTAIN:
+				resid = R.drawable.background_image;
+				break;
+			case ManaType.FOREST:
+				resid = R.drawable.background_image;
+				break;
+			default:
+				resid = 0;
+		}
+        //Log.d("BACKGROUND_CHANGED", "manaType: " + manaType + ", resid: " + resid);
 		this.findViewById(R.id.lifecount_rl).setBackgroundResource(resid);
 	}
 
@@ -466,9 +500,9 @@ public class LifeCount extends SlidingFragmentActivity implements
 		} else if (key == getString(R.string.key_theme)) {
 			// Theme changed
 			this.recreate();
-		} else if (key == getString(R.string.key_custombg)) {
+		} else if (key == getString(R.string.key_background)) {
 			// Background preference changed
-			setBackgroundChanged(mPrefs.getBoolean(key, false));
+			setBackgroundChanged(mPrefs.getInt(key, ManaType.NONE));
 		}
 
 	}
