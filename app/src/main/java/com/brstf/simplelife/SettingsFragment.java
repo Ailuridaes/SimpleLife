@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	private CheckBox m_wake_cb;
 	private CheckBox m_quick_cb;
 	private CheckBox m_bigmod_cb;
-	private CheckBox m_custombg_cb;
+	private RelativeLayout m_background_rl;
 	private SharedPreferences mPrefs;
 	private Random m_rand;
 
@@ -287,15 +288,23 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 		RadioGroup theme_radio = (RadioGroup) getView().findViewById(
 				R.id.settings_theme_rg);
 		theme_radio.setOnCheckedChangeListener(null);
+		m_background_rl = (RelativeLayout) getView().findViewById(R.id.settings_background_rl);
 		switch (theme_id) {
 		case R.style.AppBaseThemeLight:
 			theme_radio.check(R.id.settings_theme_rb_light);
+			m_background_rl.setVisibility(RelativeLayout.GONE);
 			break;
 		case R.style.AppBaseThemeDark:
 			theme_radio.check(R.id.settings_theme_rb_dark);
+			m_background_rl.setVisibility(RelativeLayout.GONE);
+			break;
+		case R.style.AppBaseThemeMana:
+			theme_radio.check(R.id.settings_theme_rb_mana);
+			m_background_rl.setVisibility(RelativeLayout.VISIBLE);
 			break;
 		case R.style.AppBaseThemeBlack:
 			theme_radio.check(R.id.settings_theme_rb_black);
+			m_background_rl.setVisibility(RelativeLayout.GONE);
 			break;
 		}
 
@@ -306,40 +315,71 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 				switch (checkedId) {
 				case R.id.settings_theme_rb_light:
 					changeTheme(R.style.AppBaseThemeLight);
+					m_background_rl.setVisibility(RelativeLayout.GONE);
 					break;
 				case R.id.settings_theme_rb_dark:
 					changeTheme(R.style.AppBaseThemeDark);
+					m_background_rl.setVisibility(RelativeLayout.GONE);
+					break;
+				case R.id.settings_theme_rb_mana:
+					changeTheme(R.style.AppBaseThemeMana);
+					m_background_rl.setVisibility(RelativeLayout.VISIBLE);
 					break;
 				case R.id.settings_theme_rb_black:
 					changeTheme(R.style.AppBaseThemeBlack);
+					m_background_rl.setVisibility(RelativeLayout.GONE);
 					break;
 				}
 			}
 		});
 
-		// Set up custom background option
-		m_custombg_cb = (CheckBox) getView().findViewById(
-				R.id.settings_background_check);
-		m_custombg_cb.setChecked(mPrefs.getBoolean(getString(R.string.key_custombg), false));
-		Button but_custombg = (Button) getView().findViewById(R.id.but_background);
-		but_custombg.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO: check if bg actually loaded
-				m_custombg_cb.setChecked(!m_custombg_cb.isChecked());
-				mPrefs.edit()
-						.putBoolean(
-								getActivity().getString(R.string.key_custombg),
-								m_custombg_cb.isChecked()).apply();
+		// Setup Background Chooser
+		int backgroundMana = mPrefs.getInt(getActivity()
+				.getString(R.string.key_background), ManaType.PLAINS);
+		RadioGroup background_radio = (RadioGroup) getView().findViewById(
+				R.id.settings_background_rg);
+		background_radio.setOnCheckedChangeListener(null);
+		switch (backgroundMana) {
+			case ManaType.PLAINS:
+				background_radio.check(R.id.settings_background_rb_plains);
+				break;
+			case ManaType.ISLAND:
+				background_radio.check(R.id.settings_background_rb_island);
+				break;
+			case ManaType.SWAMP:
+				background_radio.check(R.id.settings_background_rb_swamp);
+				break;
+			case ManaType.MOUNTAIN:
+				background_radio.check(R.id.settings_background_rb_mountain);
+				break;
+			case ManaType.FOREST:
+				background_radio.check(R.id.settings_background_rb_forest);
+				break;
+			default:
+				background_radio.check(R.id.settings_background_rb_plains);
+		}
 
-			}
-		});
+		background_radio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
-		Button but_loadbg = (Button) getView().findViewById(R.id.but_background_select);
-		but_loadbg.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				// send intent or w/e to load in image
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+					case R.id.settings_background_rb_plains:
+						changeBackground(ManaType.PLAINS);
+						break;
+					case R.id.settings_background_rb_island:
+						changeBackground(ManaType.ISLAND);
+						break;
+					case R.id.settings_background_rb_swamp:
+						changeBackground(ManaType.SWAMP);
+						break;
+					case R.id.settings_background_rb_mountain:
+						changeBackground(ManaType.MOUNTAIN);
+						break;
+					case R.id.settings_background_rb_forest:
+						changeBackground(ManaType.FOREST);
+						break;
+				}
 			}
 		});
 
@@ -372,10 +412,20 @@ public class SettingsFragment extends Fragment implements AnimationListener {
 	 * Change the theme of the app to the given theme.
 	 * 
 	 * @param theme_id
-	 *            Id of the theme to change the apps theme to
+	 *            Id of the theme to change the app theme to
 	 */
 	private void changeTheme(int theme_id) {
 		mPrefs.edit().putInt(getString(R.string.key_theme), theme_id).apply();
+	}
+
+	/**
+	 * Change the background of the app to the given background.
+	 *
+	 * @param background_int
+	 *            Id of the theme to change the app theme to
+	 */
+	private void changeBackground(int background_int) {
+		mPrefs.edit().putInt(getString(R.string.key_background), background_int).apply();
 	}
 
 	/**
