@@ -454,25 +454,26 @@ public class LifeCount extends SlidingFragmentActivity implements
 				resid = 0;
 				break;
 			case ManaType.PLAINS:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_plains;
 				break;
 			case ManaType.ISLAND:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_island;
 				break;
 			case ManaType.SWAMP:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_swamp;
 				break;
 			case ManaType.MOUNTAIN:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_mountain;
 				break;
 			case ManaType.FOREST:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_forest;
 				break;
 			default:
 				resid = 0;
 		}
         //Log.d("BACKGROUND_CHANGED", "manaType: " + manaType + ", resid: " + resid);
-		this.findViewById(R.id.lifecount_rl).setBackgroundResource(resid);
+		this.findViewById(R.id.lifecount_bg).setBackgroundResource(resid);
+
 	}
 
 	@Override
