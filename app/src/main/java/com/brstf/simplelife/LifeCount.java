@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.brstf.simplelife.controls.LifeController;
 import com.brstf.simplelife.data.HistoryInt;
@@ -200,7 +201,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 	 * null, the menu fragment can simply be retrieved from the fragment
 	 * manager.
 	 * 
-	 * @param savedInstanceState
+	 * //@param savedInstanceState
 	 *            If the activity is being re-initialized after previously being
 	 *            shut down then this Bundle contains the data it most recently
 	 *            supplied in onSaveInstanceState(Bundle). Note: Otherwise it is
@@ -454,25 +455,26 @@ public class LifeCount extends SlidingFragmentActivity implements
 				resid = 0;
 				break;
 			case ManaType.PLAINS:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_plains;
 				break;
 			case ManaType.ISLAND:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_island;
 				break;
 			case ManaType.SWAMP:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_swamp;
 				break;
 			case ManaType.MOUNTAIN:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_mountain;
 				break;
 			case ManaType.FOREST:
-				resid = R.drawable.background_image;
+				resid = R.drawable.background_forest;
 				break;
 			default:
 				resid = 0;
 		}
         //Log.d("BACKGROUND_CHANGED", "manaType: " + manaType + ", resid: " + resid);
-		this.findViewById(R.id.lifecount_rl).setBackgroundResource(resid);
+		((ImageView) this.findViewById(R.id.lifecount_bg)).setImageResource(resid);
+
 	}
 
 	@Override
