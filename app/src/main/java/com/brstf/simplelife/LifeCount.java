@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.brstf.simplelife.controls.LifeController;
 import com.brstf.simplelife.data.HistoryInt;
@@ -200,7 +201,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 	 * null, the menu fragment can simply be retrieved from the fragment
 	 * manager.
 	 * 
-	 * @param savedInstanceState
+	 * //@param savedInstanceState
 	 *            If the activity is being re-initialized after previously being
 	 *            shut down then this Bundle contains the data it most recently
 	 *            supplied in onSaveInstanceState(Bundle). Note: Otherwise it is
@@ -472,7 +473,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 				resid = 0;
 		}
         //Log.d("BACKGROUND_CHANGED", "manaType: " + manaType + ", resid: " + resid);
-		this.findViewById(R.id.lifecount_bg).setBackgroundResource(resid);
+		((ImageView) this.findViewById(R.id.lifecount_bg)).setImageResource(resid);
 
 	}
 
