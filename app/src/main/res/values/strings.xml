@@ -33,8 +33,8 @@
     <string name="settings_wake">Keep Screen On</string>
     <string name="settings_quick">Enable Quick-Reset</string>
     <string name="settings_reset_20">Reset to 20</string>
-    <string name="settings_reset_30">Reset to 30</string>
     <string name="settings_reset_40">Reset to 40</string>
+    <string name="settings_reset_custom">Custom Value</string>
     <string name="settings_entry_time">Time Until Entry Lock\n(in seconds)</string>
     <string name="settings_bigmod">Enable +5/-5 Buttons</string>
     <string name="settings_about">About</string>
@@ -49,6 +49,9 @@
     <string name="settings_black_theme">Black Theme*</string>
     <string name="settings_black_oled">*Can save battery on OLED screens</string>
     <string name="settings_cmd">Enable Commander Damage</string>
+
+    <!-- Custom Life Total Strings -->
+    <string name="settings_reset_custom_prompt">Set Custom Life Total</string>
 
     <!-- Sliding Menu Strings -->
     <string name="player1">Player 1</string>

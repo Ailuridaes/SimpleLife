@@ -78,11 +78,11 @@
 
                 <RadioGroup
                     android:id="@+id/settings_reset_val_rg"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:orientation="vertical" >
 
                     <RadioButton
@@ -95,20 +95,20 @@
                         android:textSize="@dimen/settings_radio_text_size" />
 
                     <RadioButton
-                        android:id="@+id/settings_rg_30"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/settings_reset_30"
-                        android:textColor="@color/dark_gray"
-                        android:textSize="@dimen/settings_radio_text_size" />
-
-                    <RadioButton
                         android:id="@+id/settings_rg_40"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/settings_reset_40"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/settings_radio_text_size" />
+
+                    <RadioButton
+                        android:id="@+id/settings_rg_custom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/settings_reset_custom"
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/settings_radio_text_size" />
                 </RadioGroup>
