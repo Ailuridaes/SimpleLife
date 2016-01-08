@@ -1,16 +1,17 @@
 package com.brstf.simplelife.widgets;
 
-import java.util.Observable;
-
-import com.brstf.simplelife.R;
-import com.brstf.simplelife.controls.LifeController;
-
-import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
+
+import com.brstf.simplelife.R;
+import com.brstf.simplelife.controls.LifeController;
+
+import java.util.Observable;
 
 public class PoisonView extends ObserverLayout {
 	private boolean m_poison_mode = false;
@@ -46,8 +47,8 @@ public class PoisonView extends ObserverLayout {
 		// Check if we're using a dark theme or a light theme and switch the
 		// poison drawable resource appropriately
 		boolean darkTheme = false;
-		int style = ((Activity) getContext()).getPreferences(
-				Context.MODE_PRIVATE).getInt(
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+		int style = prefs.getInt(
 				getContext().getString(R.string.key_theme),
 				R.style.AppBaseThemeLight);
 		switch (style) {

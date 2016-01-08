@@ -1,14 +1,5 @@
 package com.brstf.simplelife;
 
-import com.brstf.simplelife.controls.LifeController;
-import com.brstf.simplelife.data.HistoryInt;
-import com.brstf.simplelife.data.LifeDbAdapter;
-import com.brstf.simplelife.widgets.LifeView;
-import com.brstf.simplelife.R;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,6 +12,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import com.brstf.simplelife.controls.LifeController;
+import com.brstf.simplelife.data.HistoryInt;
+import com.brstf.simplelife.data.LifeDbAdapter;
+import com.brstf.simplelife.widgets.LifeView;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class LifeCount extends SlidingFragmentActivity implements
 		OnSharedPreferenceChangeListener {
@@ -70,9 +70,17 @@ public class LifeCount extends SlidingFragmentActivity implements
 
 		// Set poison visibility
 		setPoisonVisible(mPrefs.getBoolean(getString(R.string.key_poison),
-				false));
+                false));
 		setBigmodChanged(mPrefs
-				.getBoolean(getString(R.string.key_bigmod), true));
+                .getBoolean(getString(R.string.key_bigmod), true));
+
+        // Set background
+        if (mPrefs.getInt(getString(R.string.key_theme), R.style.AppBaseThemeLight) == R.style.AppBaseThemeMana){
+            setBackgroundChanged(mPrefs.getInt(getString(R.string.key_background), ManaType.NONE));
+        } else {
+            setBackgroundChanged(ManaType.NONE);
+        }
+
 
 		setBehindContentView(R.layout.sliding_menu_frame);
 		getSlidingMenu().setSecondaryMenu(R.layout.sliding_menu_frame2);
@@ -144,6 +152,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 			edit.putInt(getString(R.string.key_dice_num), 2);
 			edit.putInt(getString(R.string.key_theme),
 					R.style.AppBaseThemeLight);
+			edit.putInt(getString(R.string.key_background), ManaType.PLAINS);
 			edit.commit();
 		}
 	}
@@ -192,7 +201,7 @@ public class LifeCount extends SlidingFragmentActivity implements
 	 * null, the menu fragment can simply be retrieved from the fragment
 	 * manager.
 	 * 
-	 * @param savedInstanceState
+	 * //@param savedInstanceState
 	 *            If the activity is being re-initialized after previously being
 	 *            shut down then this Bundle contains the data it most recently
 	 *            supplied in onSaveInstanceState(Bundle). Note: Otherwise it is
@@ -433,6 +442,41 @@ public class LifeCount extends SlidingFragmentActivity implements
 		((LifeView) findViewById(R.id.player1_lv)).setBigmodEnabled(bigmod);
 	}
 
+	/**
+	 * Set or clear background.
+	 *
+	 * @param manaType
+	 *            int representing manaType for background choice. ManaType.NONE or 0 clears background.
+	 */
+	private void setBackgroundChanged(int manaType) {
+		int resid;
+		switch (manaType) {
+			case ManaType.NONE:
+				resid = 0;
+				break;
+			case ManaType.PLAINS:
+				resid = R.drawable.background_plains;
+				break;
+			case ManaType.ISLAND:
+				resid = R.drawable.background_island;
+				break;
+			case ManaType.SWAMP:
+				resid = R.drawable.background_swamp;
+				break;
+			case ManaType.MOUNTAIN:
+				resid = R.drawable.background_mountain;
+				break;
+			case ManaType.FOREST:
+				resid = R.drawable.background_forest;
+				break;
+			default:
+				resid = 0;
+		}
+        //Log.d("BACKGROUND_CHANGED", "manaType: " + manaType + ", resid: " + resid);
+		((ImageView) this.findViewById(R.id.lifecount_bg)).setImageResource(resid);
+
+	}
+
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
@@ -458,6 +502,10 @@ public class LifeCount extends SlidingFragmentActivity implements
 		} else if (key == getString(R.string.key_theme)) {
 			// Theme changed
 			this.recreate();
+		} else if (key == getString(R.string.key_background)) {
+			// Background preference changed
+			setBackgroundChanged(mPrefs.getInt(key, ManaType.NONE));
 		}
+
 	}
 }

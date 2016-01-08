@@ -612,6 +612,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:orientation="vertical" >
 
@@ -630,6 +631,15 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/settings_dark_theme"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+
+                <RadioButton
+                    android:id="@+id/settings_theme_rb_mana"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_theme"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/settings_radio_text_size" />
 
@@ -653,6 +663,78 @@
                 android:text="@string/settings_black_oled"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/settings_description_text_size" />
+        </RelativeLayout>
+
+        <!-- Custom Background -->
+
+        <RelativeLayout
+            android:id="@+id/settings_background_rl"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/settings_theme_rl"
+            android:layout_alignBottom="@id/settings_theme_rl"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/spacer"
+            android:background="?attr/settings_tile_background" >
+
+            <RadioGroup
+                android:id="@+id/settings_background_rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"
+                android:orientation="vertical" >
+
+                <RadioButton
+                    android:id="@+id/settings_background_rb_plains"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_plains"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+
+                <RadioButton
+                    android:id="@+id/settings_background_rb_island"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_island"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+
+                <RadioButton
+                    android:id="@+id/settings_background_rb_swamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_swamp"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+
+                <RadioButton
+                    android:id="@+id/settings_background_rb_mountain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_mountain"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+
+                <RadioButton
+                    android:id="@+id/settings_background_rb_forest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/settings_background_forest"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/settings_radio_text_size" />
+            </RadioGroup>
         </RelativeLayout>
 
         <!-- About Button -->

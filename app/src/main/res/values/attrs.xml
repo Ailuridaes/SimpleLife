@@ -6,6 +6,7 @@
     <attr name="menu_separator" format="reference" />
     <attr name="settings_tile_background" format="reference" />
     <attr name="dice_button_drawable" format="reference" />
+    <attr name="background_button_drawable" format="reference" />
     <attr name="action_undo" format="reference" />
 
     <!-- Colors -->
