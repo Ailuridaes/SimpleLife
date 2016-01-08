@@ -23,15 +23,10 @@ Current features include:
 -  Life Tracking for two players
 -  Life history tracking for two players
 -  Dice roller
--  Changing reset value
+-  Changing reset value with user-definable option
 -  Undo most recent change
 -  Poison counter tracking
-
-Features on the horizon:
-
--  Support for larger numbers of players.  This is tricky with maintaining the cleanness and aesthetics of the current app
--  Commander damage tracking for EDH games
--  Tablet optimized layout
+-  Background options with land art
 
 Dependencies
 ------------
